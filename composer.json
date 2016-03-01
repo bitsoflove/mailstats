@@ -1,0 +1,26 @@
+{
+  "name": "bitsoflove/mailstats",
+  "description": "Simple endpoint for sending emails and receiving data back in association with Mailgun",
+  "type": "library",
+  "require": {
+    "laravel/framework": "^5.2",
+    "bogardo/mailgun": "^4.0",
+    "guzzlehttp/guzzle": "^6.1"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Stijn Tilleman",
+      "email": "stijn@bitsoflove.be"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "BitsOfLove\\MailStats\\": "src"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "minimum-stability": "dev"
+}
