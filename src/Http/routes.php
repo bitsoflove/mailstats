@@ -11,8 +11,6 @@ Route::bind('projectSlug', function ($projectSlug) {
 });
 
 Route::group(['middleware' => ['web', 'auth']], function () {
-     Route::get('mail', "BitsOfLove\\MailStats\\Http\\Controllers\\MailsController@index");
-
     // for testing purposes only
     Route::get('mail-statistics/test-entry-point', "BitsOfLove\\MailStats\\Http\\Controllers\\MailStatisticsController@testEntryPoint");
 
