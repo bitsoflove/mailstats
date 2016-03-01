@@ -2,7 +2,7 @@
 
 namespace BitsOfLove\MailStats\Http\Controllers;
 
-use App\Http\Requests\ProjectRequest;
+use BitsOfLove\MailStats\Http\Requests\ProjectRequest;
 use BitsOfLove\MailStats\Entities\Project;
 use Illuminate\Http\Request;
 use App\Http\Requests;
