@@ -129,7 +129,7 @@ class LogResponse
      */
     private static function cleanUpMessageId($message_id)
     {
-        cleanup_mailgun_message_id($message_id);
+        return cleanup_mailgun_message_id($message_id);
     }
 
     /**
