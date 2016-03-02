@@ -2,8 +2,10 @@
 
 namespace BitsOfLove\MailStats\Http\Controllers;
 
+use BitsOfLove\MailStats\Exceptions\ProjectNotSupported;
 use BitsOfLove\MailStats\LogResponse;
 use BitsOfLove\MailStats\SendMail;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -29,21 +31,39 @@ class MailsController extends Controller
      * Entry point to send emails via Mailgun
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function mail(Request $request)
     {
-        $service = SendMail::create($request);
-        $service->send();
+        try {
+            $service = SendMail::create($request);
+            $service->send();
+        } catch (ProjectNotSupported $e) {
+            return new JsonResponse([
+                'success' => false,
+                'errors' => [
+                    "The project you've provided could not be found in our records"
+                ]
+            ], 400);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'success' => false,
+                'errors' => [
+                    $e->getMessage()
+                ],
+            ], 400);
+        }
 
-        return new \Illuminate\Http\JsonResponse(true);
+        return new JsonResponse([
+            'success' => true
+        ]);
     }
 
     /**
      * Entry point for the Mailgun webhooks
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function log(Request $request)
     {
@@ -53,9 +73,27 @@ class MailsController extends Controller
             $this->logger->addInfo(json_encode($request->request->all()));
         }
 
-        $responseLogger = LogResponse::create($request);
-        $responseLogger->log();
+        try {
+            $responseLogger = LogResponse::create($request);
+            $responseLogger->log();
+        } catch (ProjectNotSupported $e) {
+            return new JsonResponse([
+                'success' => false,
+                'errors' => [
+                    "The project you've provided could not be found in our records"
+                ]
+            ], 400);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'success' => false,
+                'errors' => [
+                    $e->getMessage()
+                ],
+            ], 400);
+        }
 
-        return new \Illuminate\Http\JsonResponse(true);
+        return new JsonResponse([
+            'success' => true
+        ]);
     }
 }
