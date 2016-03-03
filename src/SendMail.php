@@ -239,6 +239,7 @@ class SendMail
             'from.name' => "required",
             'from.email' => "required|email",
             'project' => "required",
+            'subject' => "required",
             'messageData.view' => "required",
             'messageData.variables' => 'required|array'
         ]);
