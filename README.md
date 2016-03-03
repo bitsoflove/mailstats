@@ -55,6 +55,10 @@ The domain and secret can be found on https://mailgun.com/app in your specific d
 
 ***The MAILGUN_DOMAIN key is not the full domain, you only need what's after /v3/ eg. https://api.mailgun.net/v3/yourdomain.here the domain is yourdomain.here***
 
+#### Configuration on mailgun
+
+If you want to use this package you'll have to setup mailgun webhooks for your domain, https://documentation.mailgun.com/api-webhooks.html. By default the webhook url is /mail-statistics (POST) route defined in package routes.php file.
+
 #### Daily
 
 The package provides 2 basic Entities: Project and MailStatistic.
@@ -84,7 +88,6 @@ GET  | mail-statistics/{projectSlug}/{messageId} | mail-stats-per-message-id | S
 
 ### Todos
 
- - Add tests
  - Add extended documention
  - Add usage example
  - Add JWT security (v2)
