@@ -8,6 +8,7 @@ use BitsOfLove\MailStats\Exceptions\ProjectNotSupported;
 use BitsOfLove\MailStats\Entities\Project;
 use BitsOfLove\MailStats\ValueObjects\Emails\From;
 use BitsOfLove\MailStats\ValueObjects\Emails\To;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -174,12 +175,7 @@ class SendMail
         $project = self::fetchProjectFromRequest($request);
 
         // validate the data
-        if ($has_errors = self::validate($data)) {
-            return new JsonResponse([
-                'success' => false,
-                'errors' => $has_errors
-            ], 400);
-        }
+        self::validate($data);
 
         $from = new From(
             $data['from']['email'], $data['from']['name']
@@ -248,7 +244,7 @@ class SendMail
         ]);
 
         if ($validator->fails()) {
-            return $validator->errors();
+            throw new ValidationException($validator);
         }
     }
 

@@ -5,6 +5,7 @@ namespace BitsOfLove\MailStats\Http\Controllers;
 use BitsOfLove\MailStats\Exceptions\ProjectNotSupported;
 use BitsOfLove\MailStats\LogResponse;
 use BitsOfLove\MailStats\SendMail;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -44,6 +45,11 @@ class MailsController extends Controller
                 'errors' => [
                     "The project you've provided could not be found in our records"
                 ]
+            ], 400);
+        } catch (ValidationException $e) {
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $e->validator->errors(),
             ], 400);
         } catch (\Exception $e) {
             return new JsonResponse([
