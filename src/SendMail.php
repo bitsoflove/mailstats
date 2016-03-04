@@ -176,10 +176,12 @@ class SendMail
      */
     public static function create(Request $request)
     {
-        $data = Collection::make($request->request->all());
-
         // ensure the project is available via the request
         $project = self::fetchProjectFromRequest($request);
+
+        // add missing information to the request
+        // create a collection to work with
+        $data = self::injectExtraInfoInRequest($project, $request->request->all());
 
         // validate the data
         self::validate($data);
@@ -207,6 +209,37 @@ class SendMail
         }
 
         return new static($to, $from, $subject, $view, $viewData, $project, $tags, $options);
+    }
+
+    /**
+     * Inject extra information given on the project if it does not exist in the request data
+     *
+     * @param Project $project
+     * @param array $data
+     * @return Collection
+     */
+    public static function injectExtraInfoInRequest(Project $project, $data)
+    {
+        // replace missing recipient information with the defaults
+        if (!isset($data['to']['name'])) {
+            $data['to']['name'] = $project->recipient_name;
+        }
+
+        if (!isset($data['to']['email'])) {
+            $data['to']['email'] = $project->recipient_email;
+        }
+
+        // replace missing sender information with the defaults
+        if (!isset($data['from']['name'])) {
+            $data['from']['name'] = $project->sender_name;
+        }
+
+        if (!isset($data['from']['email'])) {
+            $data['from']['email'] = $project->sender_email;
+        }
+
+        // return a new collection
+        return collect($data);
     }
 
     /**
@@ -251,8 +284,7 @@ class SendMail
         $validator = \Validator::make($data->toArray(), [
             'to.name' => "required",
             'to.email' => "required|email",
-            'from.name' => "required",
-            'from.email' => "required|email",
+            'from.email' => "email",
             'project' => "required",
             'subject' => "required",
             'messageData.view' => "required",
@@ -268,7 +300,7 @@ class SendMail
      * Retrieve a project from a given request
      *
      * @param Request $request
-     * @return Model
+     * @return Project
      * @throws \Exception
      */
     private static function fetchProjectFromRequest(Request $request)

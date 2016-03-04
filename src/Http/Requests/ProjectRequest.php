@@ -25,7 +25,8 @@ class ProjectRequest extends Request
     {
         return [
             'name' => ['required', 'alpha_dash'],
-            'human_name' => ['required']
+            'human_name' => ['required'],
+            'recipient_email' => ['email'],
         ];
     }
 }

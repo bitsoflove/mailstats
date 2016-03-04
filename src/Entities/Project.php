@@ -10,7 +10,11 @@ class Project extends Model
 
     protected $fillable = [
         "name",
-        "human_name"
+        "human_name",
+        "recipient_email",
+        "recipient_name",
+        "sender_email",
+        "sender_name",
     ];
 
     /**
