@@ -19,6 +19,10 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         'as' => "mail-stats-per-project",
         'uses' => "BitsOfLove\\MailStats\\Http\\Controllers\\MailStatisticsController@indexPerProject"
     ]);
+    Route::get("mail-statistics/{projectSlug}/charts", [
+        'as' => "mail-stats-per-project-cart",
+        'uses' => "BitsOfLove\\MailStats\\Http\\Controllers\\MailStatisticsController@charts"
+    ]);
     Route::get("mail-statistics/{projectSlug}/{messageId}", [
         'as' => "mail-stats-per-message-id",
         'uses' => "BitsOfLove\\MailStats\\Http\\Controllers\\MailStatisticsController@indexPerMessageId"

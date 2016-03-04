@@ -106,4 +106,29 @@ class MailStatisticsController extends Controller
             'mailStatistics'
         ));
     }
+
+    public function charts(Project $project)
+    {
+        $mailStatistics = $this->mailStatistics->newestGrouped()->pluck('status', 'id');
+
+        $lastStatuses = [];
+        $total = 0;
+
+        $mailStatistics->each(function ($item, $key) use (&$lastStatuses, &$total) {
+            if (!isset($lastStatuses[$item])) {
+                $lastStatuses[$item] = 0;
+            }
+
+            $lastStatuses[$item]++;
+            $total++;
+        });
+
+        return view("mail-stats::mail-statistics.charts", compact(
+            'project',
+            'lastStatuses',
+            'total'
+        ));
+
+    }
+
 }

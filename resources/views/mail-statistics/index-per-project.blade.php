@@ -9,6 +9,8 @@
 
 @section('main-content')
 
+    <a class="btn btn-default" href="{{ route('mail-stats-per-project-cart',[$project->name]) }}">Chart view</a>
+
     <table class="table">
         <thead>
         <tr>
