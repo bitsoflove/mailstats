@@ -43,7 +43,7 @@ class MailStatisticsController extends Controller
      */
     public function index()
     {
-        $mailStatistics = $this->mailStatistics->groupedBy('service_message_id')->newest()->paginate($this->perPage);
+        $mailStatistics = $this->mailStatistics->newestGrouped()->paginate($this->perPage);
         $projects = $this->projects->lists('human_name', 'name');
 
         return view('mail-stats::mail-statistics.index', compact(
@@ -76,7 +76,7 @@ class MailStatisticsController extends Controller
     public function indexPerProject(Project $project)
     {
         // @todo: add repo?
-        $mailStatistics = $project->mailStatistics()->groupedBy('service_message_id')->newest()->paginate($this->perPage);
+        $mailStatistics = $project->mailStatistics()->newestGrouped()->paginate($this->perPage);
 
         return view('mail-stats::mail-statistics.index-per-project', compact(
             'project',

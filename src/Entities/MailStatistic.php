@@ -60,4 +60,19 @@ class MailStatistic extends Model
     {
         return $query->groupBy($column);
     }
+
+    /**
+     *
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeNewestGrouped($query)
+    {
+        // @todo: find a better way of doing this
+        $newest = \DB::select("select max(id) as id from mail_statistics group by service_message_id");
+        $newest = collect($newest)->pluck('id');
+
+        return $query->whereIn('id', $newest->toArray())->newest();
+    }
 }
