@@ -38,8 +38,26 @@ class MailStatistic extends Model
         return $query->where("service_message_id", $id);
     }
 
+    /**
+     * Order by created at
+     *
+     * @param Builder $query
+     * @return Builder
+     */
     public function scopeNewest($query)
     {
         return $query->orderBy('created_at', 'DESC');
+    }
+
+    /**
+     * Add a group by scope to the query
+     *
+     * @param Builder $query
+     * @param string $column
+     * @return Builder
+     */
+    public function scopeGroupedBy($query, $column = "service_message_id")
+    {
+        return $query->groupBy($column);
     }
 }
