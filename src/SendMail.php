@@ -61,6 +61,7 @@ class SendMail
      * @param array $viewData
      * @param Model $project
      * @param array $tags
+     * @param array $options
      */
     public function __construct(
         To $to,
@@ -69,12 +70,17 @@ class SendMail
         $view,
         array $viewData = [],
         Model $project,
-        array $tags = []
+        array $tags = [],
+        array $options = []
     ) {
+        $options += [
+            'view_namespace' => "mail-stats"
+        ];
+
         $this->to = $to;
         $this->from = $from;
         $this->subject = $subject;
-        $this->setView($view, "mail-stats");
+        $this->setView($view, $options['view_namespace']);
         $this->viewData = $viewData;
         $this->project = $project;
         $this->tags = $tags;
@@ -117,11 +123,12 @@ class SendMail
      *
      * @param string $view
      * @param null|string $namespace
+     * @todo: add possibility to change the namespace from outside the class
      */
     public function setView($view, $namespace = null)
     {
         // no namespace was given for the email views
-        if (is_null($namespace)) {
+        if (is_null($namespace) || empty($namespace)) {
             $this->view = $view;
             return;
         }
@@ -177,6 +184,9 @@ class SendMail
         // validate the data
         self::validate($data);
 
+        // init the options
+        $options = [];
+
         $from = new From(
             $data['from']['email'], $data['from']['name']
         );
@@ -191,7 +201,12 @@ class SendMail
         $view = $data['messageData']['view'];
         $viewData = $data['messageData']['variables'];
 
-        return new static($to, $from, $subject, $view, $viewData, $project, $tags);
+        // if the namespace for the
+        if(isset($data['messageData']['view_namespace'])){
+            $options['view_namespace'] = $data['messageData']['view_namespace'];
+        }
+
+        return new static($to, $from, $subject, $view, $viewData, $project, $tags, $options);
     }
 
     /**
@@ -229,7 +244,7 @@ class SendMail
      *
      * @param Collection $data
      * @return \Illuminate\Support\MessageBag
-     * @throws EmailDataMissmatchException
+     * @throws ValidationException
      */
     public static function validate(Collection $data)
     {
