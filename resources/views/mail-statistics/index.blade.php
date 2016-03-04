@@ -49,4 +49,7 @@
     </table>
 
     {!! $mailStatistics->links() !!}
+
+    @include("mail-stats::partials.status-overview")
+
 @endsection

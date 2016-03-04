@@ -32,4 +32,7 @@
         @endforeach
         </tbody>
     </table>
+
+    @include("mail-stats::partials.status-overview")
+
 @endsection
