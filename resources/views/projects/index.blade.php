@@ -15,7 +15,7 @@
         </div>
     @endif
 
-    <table>
+    <table class="table table-striped">
         <thead>
         <tr>
             <th>Name</th>
@@ -28,10 +28,10 @@
                 <td>{{ $project->human_name }} ({{ $project->name }})</td>
                 <td>
                     <ul>
-                        <li><a href="{{ route('projects.edit', [
+                        <li class="list-group-item"><a href="{{ route('projects.edit', [
                             $project->id
                         ]) }}">edit</a></li>
-                        <li><a href="{{ route('projects.delete', [
+                        <li class="list-group-item list-group-item-danger"><a href="{{ route('projects.delete', [
                             $project->id
                         ]) }}">delete</a></li>
                     </ul>
@@ -40,7 +40,6 @@
         @endforeach
         </tbody>
     </table>
-
 
     {!! $projects->links() !!}
 

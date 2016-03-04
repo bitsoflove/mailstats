@@ -9,6 +9,16 @@
 
 @section('main-content')
 
+    @if($projects->count() > 1)
+        <h3>Filter by project</h3>
+        <ul class="list-group">
+            @foreach($projects as $slug => $project)
+                <li class="list-group-item"><a href="{{ route('mail-stats-per-project', [$slug]) }}">{{ $project }}</a>
+                </li>
+            @endforeach
+        </ul>
+    @endif
+
     <table class="table">
         <thead>
         <tr>
