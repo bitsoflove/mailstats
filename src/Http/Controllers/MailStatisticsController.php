@@ -10,16 +10,30 @@ use App\Http\Controllers\Controller;
 
 class MailStatisticsController extends Controller
 {
+    /**
+     * @var int
+     *   the default number of items in a paginated overview
+     */
     protected $perPage = 15;
 
+    /**
+     * @var MailStatistic
+     */
     protected $mailStatistics;
 
     /**
-     * @param MailStatistic $mailLogs
+     * @var Project
      */
-    public function __construct(MailStatistic $mailLogs)
+    private $projects;
+
+    /**
+     * @param MailStatistic $mailLogs
+     * @param Project $projects
+     */
+    public function __construct(MailStatistic $mailLogs, Project $projects)
     {
         $this->mailStatistics = $mailLogs;
+        $this->projects = $projects;
     }
 
     /**
@@ -30,9 +44,11 @@ class MailStatisticsController extends Controller
     public function index()
     {
         $mailStatistics = $this->mailStatistics->groupedBy('service_message_id')->newest()->paginate($this->perPage);
+        $projects = $this->projects->lists('human_name', 'name');
 
         return view('mail-stats::mail-statistics.index', compact(
-            'mailStatistics'
+            'mailStatistics',
+            'projects'
         ));
     }
 
