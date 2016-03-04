@@ -42,6 +42,7 @@ class PersistMailStatistic
             'status' => 'queued', // default state
             'project_id' => $data->getProject()->id,
             'service_message_id' => $response->http_response_body->id,
+            'category_id' => $data->getCategory() ? $data->getCategory()->id : null,
         ]);
     }
 }

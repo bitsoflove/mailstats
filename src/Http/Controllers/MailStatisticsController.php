@@ -128,7 +128,5 @@ class MailStatisticsController extends Controller
             'lastStatuses',
             'total'
         ));
-
     }
-
 }

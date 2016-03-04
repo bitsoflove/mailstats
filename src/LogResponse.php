@@ -2,6 +2,7 @@
 
 namespace BitsOfLove\MailStats;
 
+use BitsOfLove\MailStats\Entities\Category;
 use BitsOfLove\MailStats\Exceptions\ProjectNotSupported;
 use BitsOfLove\MailStats\Entities\MailStatistic;
 use BitsOfLove\MailStats\Entities\Project;
@@ -32,6 +33,11 @@ class LogResponse
     protected $project;
 
     /**
+     * @var Category
+     */
+    protected $category;
+
+    /**
      * @var string
      */
     protected $service_id;
@@ -42,14 +48,21 @@ class LogResponse
      * @param string $status
      * @param Project $project
      * @param string $service_id
+     * @param $category
      */
-    public function __construct($recipient, $tag, $status, $project, $service_id)
+    public function __construct($recipient, $tag, $status, $project, $service_id, $category)
     {
         $this->recipient = $recipient;
         $this->tag = $tag;
         $this->status = $status;
         $this->project = $project;
+        $this->category = $category;
         $this->service_id = $service_id;
+    }
+
+    public function getCategory()
+    {
+        return $this->category;
     }
 
     /**
@@ -66,7 +79,22 @@ class LogResponse
         $project = self::fetchProjectFromRequest($request);
         $service_id = self::fetchServiceMessageIdFromRequest($request);
 
-        return new self($recipient, $tag, $status, $project, $service_id);
+        $category = self::determineCategoryByMessageId($service_id);
+
+        return new self($recipient, $tag, $status, $project, $service_id, $category);
+    }
+
+    /**
+     * Determine the category of the given service_message_id
+     *
+     * @param $service_message_id
+     * @return null|Category
+     */
+    private static function determineCategoryByMessageId($service_message_id)
+    {
+        $mail_statistic = MailStatistic::where('service_message_id', $service_message_id)->first();
+
+        return is_null($mail_statistic) ? null : $mail_statistic->category;
     }
 
     /**
@@ -82,6 +110,7 @@ class LogResponse
             'status' => $this->status,
             'project_id' => $this->project->id,
             'service_message_id' => $this->service_id,
+            'category_id' => !$this->category ? null : $this->category->id
         ]);
 
         return $log;

@@ -2,12 +2,14 @@
 
 namespace BitsOfLove\MailStats;
 
+use BitsOfLove\MailStats\Entities\Category;
 use BitsOfLove\MailStats\Events\EmailAddedToQueue;
 use BitsOfLove\MailStats\Exceptions\EmailDataMissmatchException;
 use BitsOfLove\MailStats\Exceptions\ProjectNotSupported;
 use BitsOfLove\MailStats\Entities\Project;
 use BitsOfLove\MailStats\ValueObjects\Emails\From;
 use BitsOfLove\MailStats\ValueObjects\Emails\To;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -51,9 +53,14 @@ class SendMail
     protected $tags;
 
     /**
-     * @var Model
+     * @var Project
      */
     protected $project;
+
+    /**
+     * @var Category
+     */
+    protected $category;
 
     /**
      * @param To $to
@@ -72,6 +79,7 @@ class SendMail
         $view,
         array $viewData = [],
         Model $project,
+        Category $category,
         array $tags = [],
         array $options = []
     ) {
@@ -87,6 +95,7 @@ class SendMail
         $this->setView($view, $options['view_namespace']);
         $this->viewData = $viewData;
         $this->project = $project;
+        $this->category = $category;
         $this->tags = $tags;
     }
 
@@ -164,6 +173,14 @@ class SendMail
     }
 
     /**
+     * @return Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
      * @return array
      */
     public function getTags()
@@ -182,6 +199,9 @@ class SendMail
     {
         // ensure the project is available via the request
         $project = self::fetchProjectFromRequest($request);
+
+        // ensure the category is available in the request
+        $category = self::fetchCategoryFromRequest($request);
 
         // add missing information to the request
         // create a collection to work with
@@ -212,7 +232,7 @@ class SendMail
             $options['view_namespace'] = $data['messageData']['view_namespace'];
         }
 
-        return new static($to, $from, $subject, $view, $viewData, $project, $tags, $options);
+        return new static($to, $from, $subject, $view, $viewData, $project, $category, $tags, $options);
     }
 
     /**
@@ -322,6 +342,28 @@ class SendMail
         }
 
         throw new ProjectNotSupported("Provide a project.");
+    }
+
+    /**
+     * @param Request $request
+     * @return bool|Category
+     */
+    private static function fetchCategoryFromRequest(Request $request)
+    {
+        if ($request->has('category')) {
+            $category = $request->has('category');
+        } else {
+            $category = config('mailstats.category.default', 'mail');
+        }
+
+        // do lookup
+        $category = Category::where('name', $category)->first();
+
+        if (!$category) {
+            throw new ModelNotFoundException("The given category is not in our records");
+        }
+
+        return $category;
     }
 
     /**
