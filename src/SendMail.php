@@ -13,11 +13,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Mailgun;
+use Bogardo\Mailgun\Mailgun;
 use Mailgun\Connection\Exceptions\MissingRequiredParameters;
 
 class SendMail
 {
+    protected $mailgun;
+
     /**
      * @var To
      */
@@ -73,6 +75,8 @@ class SendMail
         array $tags = [],
         array $options = []
     ) {
+        $this->mailgun = app('mailgun');
+
         $options += [
             'view_namespace' => "mail-stats"
         ];
@@ -250,7 +254,7 @@ class SendMail
     public function send()
     {
         try {
-            $res = Mailgun::send($this->view, $this->viewData,
+            $res = $this->mailgun->send($this->view, $this->viewData,
                 function ($message) {
                     $message->from($this->from->getEmail(), $this->from->getName());
                     $message->to($this->to->getEmail(), $this->to->getName())
