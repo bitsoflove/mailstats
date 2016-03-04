@@ -29,6 +29,7 @@ class MailStatsProvider extends ServiceProvider
     {
         parent::boot($events);
 
+        $this->bootConfig();
         $this->bootViews();
         $this->bootMigrations();
     }
@@ -42,6 +43,15 @@ class MailStatsProvider extends ServiceProvider
     {
         $this->registerLogger();
         $this->registerRoutes();
+    }
+
+    /**
+     * Boot the config for the package
+     */
+    private function bootConfig(){
+        $this->publishes([
+            __DIR__.'/../config/config.php' => config_path('mailstats.php'),
+        ]);
     }
 
     /**
