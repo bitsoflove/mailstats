@@ -2,6 +2,7 @@
 
 namespace BitsOfLove\MailStats\Entities;
 
+use BitsOfLove\MailStats\Entities\Category;
 use BitsOfLove\MailStats\Entities\Project;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +11,7 @@ class MailStatistic extends Model
 
     protected $fillable = [
         'project_id',
+        'category_id',
         'service_message_id',
         'recipient',
         'tag',
@@ -24,6 +26,14 @@ class MailStatistic extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     /**
