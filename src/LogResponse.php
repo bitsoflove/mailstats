@@ -85,19 +85,6 @@ class LogResponse
     }
 
     /**
-     * Determine the category of the given service_message_id
-     *
-     * @param $service_message_id
-     * @return null|Category
-     */
-    private static function determineCategoryByMessageId($service_message_id)
-    {
-        $mail_statistic = MailStatistic::where('service_message_id', $service_message_id)->first();
-
-        return is_null($mail_statistic) ? null : $mail_statistic->category;
-    }
-
-    /**
      * Create the log entry with the provided information
      *
      * @return MailStatistic
@@ -181,5 +168,19 @@ class LogResponse
         }
 
         throw new ProjectNotSupported("The project: {$project_name} could not be found in our records.");
+    }
+
+
+    /**
+     * Determine the category of the given service_message_id
+     *
+     * @param $service_message_id
+     * @return null|Category
+     */
+    private static function determineCategoryByMessageId($service_message_id)
+    {
+        $mail_statistic = MailStatistic::where('service_message_id', $service_message_id)->first();
+
+        return is_null($mail_statistic) ? null : $mail_statistic->category;
     }
 }

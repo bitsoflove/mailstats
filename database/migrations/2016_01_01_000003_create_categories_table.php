@@ -16,7 +16,6 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->timestamps();
-
         });
 
         Schema::table('mail_statistics', function (Blueprint $table) {
