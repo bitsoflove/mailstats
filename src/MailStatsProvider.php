@@ -48,7 +48,8 @@ class MailStatsProvider extends ServiceProvider
     /**
      * Boot the config for the package
      */
-    private function bootConfig(){
+    private function bootConfig()
+    {
         $this->publishes([
             __DIR__.'/../config/config.php' => config_path('mailstats.php'),
         ]);

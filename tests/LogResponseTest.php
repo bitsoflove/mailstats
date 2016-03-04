@@ -128,4 +128,23 @@ class LogResponseTest extends TestCase
         $this->assertInstanceOf($this->logResponseClass, $logResponse);
         $this->assertInstanceOf($this->categoryClass, $logResponse->getCategory());
     }
+
+    /** @test */
+    public function logresponse_finds_null_for_non_existing_message()
+    {
+        list($mailStatistic, $project, $category) = $this->createMailStatistic();
+
+        $data = [
+            'recipient' => 'some@email.to',
+            'tag' => $project->name,
+            'status' => "delivered",
+            'message-id' => "some random thing",
+        ];
+
+        $request = new \Illuminate\Http\Request([], $data);
+        $logResponse = \BitsOfLove\MailStats\LogResponse::create($request);
+
+        $this->assertInstanceOf($this->logResponseClass, $logResponse);
+        $this->assertNull($logResponse->getCategory());
+    }
 }
