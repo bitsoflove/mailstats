@@ -59,7 +59,7 @@ The domain and secret can be found on https://mailgun.com/app in your specific d
 
 If you want to use this package you'll have to setup mailgun webhooks for your domain, https://documentation.mailgun.com/api-webhooks.html. By default the webhook url is /mail-statistics (POST) route defined in package routes.php file.
 
-#### Daily
+#### Default available routes
 
 The package provides 2 basic Entities: Project and MailStatistic.
 
@@ -85,6 +85,66 @@ GET  | mail-statistics                           |    | List all MailStatistic e
 GET  | mail-statistics/{projectSlug}             | mail-stats-per-project| Show all MailStatic information for the requested project
 GET  | mail-statistics/{projectSlug}/{messageId} | mail-stats-per-message-id | Show the bundled information for the given message-id
 
+#### Daily usage
+
+Full payload example:
+
+```javascript
+        function action() {
+            jQuery.ajax({
+                url: "http://<yourdomain.com>/mail-send",
+                type: "POST",
+                data: {
+                    to: {
+                        name: "<recipient_name_>",
+                        email: "<recipient_email@domain.com>"
+                    },
+                    from: {
+                        name: "<sender_name_>",
+                        email: "<sender_email@domain.com>"
+                    },
+                    project: "<project>",
+                    subject: "<subject>",
+                    messageData: {
+                        view: "<the_view_you_would_like_to_use>",
+                        variables: {
+                            <list_of_variables_to_use_in_the_view>
+                        },
+                        view_namespace: <the_namespace_if_any>
+                    }
+                },
+                success: function (result) {
+                    <do_something_on_success>
+                }
+            })
+        }
+```
+
+Minimum required payload example:
+
+If you've entered recipient and/or from information on your defined project. The package will replace them in the request. If the view_namespace is missing the default will be used "mail-stats", if you would like to use no namespace enter an empty string.
+
+```javascript
+        function action() {
+            jQuery.ajax({
+                url: "http://<yourdomain.com>/mail-send",
+                type: "POST",
+                data: {
+                    project: "<project>",
+                    subject: "<subject>",
+                    messageData: {
+                        view: "<the_view_you_would_like_to_use>",
+                        variables: {
+                            <list_of_variables_to_use_in_the_view>
+                        },
+                    }
+                },
+                success: function (result) {
+                    <do_something_on_success>
+                }
+            })
+        }
+```
 
 ### Todos
 
