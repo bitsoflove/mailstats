@@ -9,8 +9,11 @@
 
 @section('main-content')
     <a class="btn btn-primary" href="javascript:action()">Click me to send an email.</a>
-    <script>
+@endsection
 
+@section('scripts')
+    @parent
+    <script type="text/javascript">
         function action() {
             jQuery.ajax({
                 url: "{{ url("mail-send") }}",
@@ -41,7 +44,4 @@
 
 
     </script>
-
-
-
 @endsection
