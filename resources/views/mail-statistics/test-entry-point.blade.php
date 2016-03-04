@@ -8,7 +8,7 @@
 @endsection
 
 @section('main-content')
-    <a href="javascript:action()">boom</a>
+    <a class="btn btn-primary" href="javascript:action()">Click me to send an email.</a>
     <script>
 
         function action() {

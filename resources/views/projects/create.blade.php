@@ -22,43 +22,43 @@
     <form action="{{ route('projects.store') }}" method="POST">
         {{ csrf_field() }}
 
-        <div>
+        <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" name="name" id="name" value="{{ old('name') }}">
+            <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control">
         </div>
 
-        <div>
+        <div class="form-group">
             <label for="human_name">Human readable name</label>
-            <input type="text" name="human_name" id="human_name" value="{{ old('human_name') }}">
+            <input type="text" name="human_name" id="human_name" value="{{ old('human_name') }}" class="form-control">
         </div>
 
         <fieldset title="Default recipient information">
             <legend>Default recipient information</legend>
-            <div>
+            <div class="form-group">
                 <label for="recipient_name">Name</label>
-                <input type="text" name="recipient_name" id="recipient_name" value="{{ old('recipient_name') }}">
+                <input type="text" name="recipient_name" id="recipient_name" value="{{ old('recipient_name') }}" class="form-control">
             </div>
 
-            <div>
+            <div class="form-group">
                 <label for="recipient_email">Email</label>
-                <input type="email" name="recipient_email" id="recipient_email" value="{{ old('recipient_email') }}">
+                <input type="email" name="recipient_email" id="recipient_email" value="{{ old('recipient_email') }}" class="form-control">
             </div>
         </fieldset>
 
         <fieldset title="Default sender information">
             <legend>Default sender information</legend>
-            <div>
+            <div class="form-group">
                 <label for="sender_name">Name</label>
-                <input type="text" name="sender_name" id="sender_name" value="{{ old('sender_name') }}">
+                <input type="text" name="sender_name" id="sender_name" value="{{ old('sender_name') }}" class="form-control">
             </div>
 
-            <div>
+            <div class="form-group">
                 <label for="sender_email">Email</label>
-                <input type="email" name="sender_email" id="sender_email" value="{{ old('sender_email') }}">
+                <input type="email" name="sender_email" id="sender_email" value="{{ old('sender_email') }}" class="form-control">
             </div>
         </fieldset>
 
-        <button type="submit">Save</button>
+        <button type="submit" class="btn btn-primary">Save</button>
     </form>
 
 @endsection
