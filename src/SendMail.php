@@ -202,7 +202,7 @@ class SendMail
         $viewData = $data['messageData']['variables'];
 
         // if the namespace for the
-        if(isset($data['messageData']['view_namespace'])){
+        if (isset($data['messageData']['view_namespace'])) {
             $options['view_namespace'] = $data['messageData']['view_namespace'];
         }
 

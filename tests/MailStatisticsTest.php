@@ -76,6 +76,4 @@ class MailStatisticsTest extends TestCase
 
         $this->assertInstanceOf($this->projectClass, $statistic->project);
     }
-
-
 }

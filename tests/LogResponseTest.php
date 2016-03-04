@@ -58,7 +58,8 @@ class LogResponseTest extends TestCase
      * @test
      * @expectedException BitsOfLove\MailStats\Exceptions\ProjectNotSupported
      */
-    public function logresponse_with_non_existing_project_in_tag_throws_exception(){
+    public function logresponse_with_non_existing_project_in_tag_throws_exception()
+    {
         $data = [
             'recipient' => 'some@email.to',
             'tag' => "testing",

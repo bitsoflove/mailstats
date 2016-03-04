@@ -41,7 +41,7 @@ class SendMailTest extends TestCase
      * @test
      * @expectedException BitsOfLove\MailStats\Exceptions\ProjectNotSupported
      */
-    function non_existing_project_should_throw_an_exception()
+    public function non_existing_project_should_throw_an_exception()
     {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'bitsoflove'
@@ -53,7 +53,7 @@ class SendMailTest extends TestCase
     /**
      * @test
      */
-    function correct_mail_config_should_return_json()
+    public function correct_mail_config_should_return_json()
     {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'testing',
@@ -83,7 +83,8 @@ class SendMailTest extends TestCase
      * @test
      * @expectedException \Illuminate\Validation\ValidationException
      */
-    public function missing_from_parameter_should_throw_exception(){
+    public function missing_from_parameter_should_throw_exception()
+    {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'testing',
             "to" => [
@@ -106,7 +107,8 @@ class SendMailTest extends TestCase
      * @test
      * @expectedException \Illuminate\Validation\ValidationException
      */
-    public function missing_from_name_parameter_should_throw_exception(){
+    public function missing_from_name_parameter_should_throw_exception()
+    {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'testing',
             "to" => [
@@ -132,7 +134,8 @@ class SendMailTest extends TestCase
      * @test
      * @expectedException \Illuminate\Validation\ValidationException
      */
-    public function missing_from_email_parameter_should_throw_exception(){
+    public function missing_from_email_parameter_should_throw_exception()
+    {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'testing',
             "to" => [
@@ -158,7 +161,8 @@ class SendMailTest extends TestCase
      * @test
      * @expectedException \Illuminate\Validation\ValidationException
      */
-    public function missing_to_parameter_should_throw_exception(){
+    public function missing_to_parameter_should_throw_exception()
+    {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'testing',
             "from" => [
@@ -181,7 +185,8 @@ class SendMailTest extends TestCase
      * @test
      * @expectedException \Illuminate\Validation\ValidationException
      */
-    public function missing_to_name_parameter_should_throw_exception(){
+    public function missing_to_name_parameter_should_throw_exception()
+    {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'testing',
             "to" => [
@@ -207,7 +212,8 @@ class SendMailTest extends TestCase
      * @test
      * @expectedException \Illuminate\Validation\ValidationException
      */
-    public function missing_to_email_parameter_should_throw_exception(){
+    public function missing_to_email_parameter_should_throw_exception()
+    {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'testing',
             "to" => [
@@ -233,7 +239,8 @@ class SendMailTest extends TestCase
      * @test
      * @expectedException \Illuminate\Validation\ValidationException
      */
-    public function missing_subject_parameter_should_throw_exception(){
+    public function missing_subject_parameter_should_throw_exception()
+    {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'testing',
             "to" => [
@@ -259,7 +266,8 @@ class SendMailTest extends TestCase
      * @test
      * @expectedException \Illuminate\Validation\ValidationException
      */
-    public function missing_messagedata_parameter_should_throw_exception(){
+    public function missing_messagedata_parameter_should_throw_exception()
+    {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'testing',
             "to" => [
@@ -280,7 +288,8 @@ class SendMailTest extends TestCase
      * @test
      * @expectedException \Illuminate\Validation\ValidationException
      */
-    public function missing_messagedata_view_parameter_should_throw_exception(){
+    public function missing_messagedata_view_parameter_should_throw_exception()
+    {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'testing',
             "to" => [
@@ -306,7 +315,8 @@ class SendMailTest extends TestCase
      * @test
      * @expectedException \Illuminate\Validation\ValidationException
      */
-    public function missing_messagedata_variables_parameter_should_throw_exception(){
+    public function missing_messagedata_variables_parameter_should_throw_exception()
+    {
         $request = new \Illuminate\Http\Request([], [
             'project' => 'testing',
             "to" => [
@@ -325,5 +335,4 @@ class SendMailTest extends TestCase
 
         \BitsOfLove\MailStats\SendMail::create($request);
     }
-
 }
