@@ -238,12 +238,11 @@ class SendMail
         }
 
         // set the reply to info
-        if (isset($data['reply-to']['email']) && !is_null($data['reply-to']['email'])) {
-            $options['reply-to']['email'] = $data['reply-to']['email'];
-        }
-
-        if (isset($data['reply-to']['name']) && !is_null($data['reply-to']['name'])) {
-            $options['reply-to']['name'] = $data['reply-to']['name'];
+        if (isset($data['replyto']) && isset($data['replyto']['email']) && !is_null($data['replyto']['email'])) {
+            $options['replyto']['email'] = $data['replyto']['email'];
+            if (isset($data['replyto']['name']) && !is_null($data['replyto']['name'])) {
+                $options['replyto']['name'] = $data['replyto']['name'];
+            }
         }
 
         return new static($to, $from, $subject, $view, $viewData, $project, $category, $tags, $options);
@@ -277,15 +276,15 @@ class SendMail
         }
 
         // insert the reply-to if set on the project
-        if (!isset($data['reply-to']['email']) && !is_null($project->reply_to_email)) {
-            $data['reply-to']['email'] = $project->reply_to;
+        if (!isset($data['replyto']['email']) || !empty($project->reply_to_email)) {
+            $data['replyto']['email'] = $project->reply_to_email;
+        }
 
-            if (!isset($data['reply-to']['name'])) {
-                if(!is_null($project->reply_to_name)){
-                    $data['reply-to']['name'] = $project->reply_to_name;
-                }else{ // fallback to project name
-                    $data['reply-to']['name'] = $project->human_name;
-                }
+        if (isset($data['replyto']['email']) && !isset($data['replyto']['name'])) {
+            if (!is_null($project->reply_to_name)) {
+                $data['replyto']['name'] = $project->reply_to_name;
+            } else { // fallback to project name
+                $data['replyto']['name'] = $project->human_name;
             }
         }
 
@@ -307,8 +306,8 @@ class SendMail
                     $message->to($this->to->getEmail(), $this->to->getName())
                         ->subject($this->subject);
                     // set reply to
-                    if ($this->options['reply-to']) {
-                        $message->replyTo($this->options['reply-to']['email'], $this->options['reply-to']['name']);
+                    if (isset($this->options['replyto']['email'])) {
+                        $message->replyTo($this->options['replyto']['email'], $this->options['replyto']['name']);
                     }
 
                     foreach ($this->tags as $tag) {
@@ -341,7 +340,7 @@ class SendMail
             'to.name' => "required",
             'to.email' => "required|email",
             'from.email' => "email",
-            'reply-to.email' => "email",
+            'replyto.email' => "email",
             'project' => "required",
             'subject' => "required",
             'messageData.view' => "required",
