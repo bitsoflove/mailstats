@@ -15,6 +15,8 @@ class Project extends Model
         "recipient_name",
         "sender_email",
         "sender_name",
+        "reply_to_email",
+        "reply_to_name",
     ];
 
     /**

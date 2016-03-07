@@ -68,6 +68,22 @@
             </div>
         </fieldset>
 
+        <fieldset title="Reply to information">
+            <legend>Default reply to information</legend>
+
+            <div class="form-group">
+                <label for="reply_to_name">Default reply to name</label>
+                <input type="text" name="reply_to_name" id="reply_to_name"
+                       value="@if(old('reply_to_name')){{ old('reply_to_name') }}@else{{ $project->reply_to_name }}@endif" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="reply_to_email">Default reply to e-mail address</label>
+                <input type="text" name="reply_to_email" id="reply_to_email"
+                       value="@if(old('reply_to_email')){{ old('reply_to_email') }}@else{{ $project->reply_to_email }}@endif" class="form-control">
+            </div>
+        </fieldset>
+
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
 

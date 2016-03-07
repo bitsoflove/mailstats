@@ -58,6 +58,19 @@
             </div>
         </fieldset>
 
+        <fieldset title="Reply to information">
+            <legend>Default reply to information</legend>
+            <div class="form-group">
+                <label for="reply_to_name">Name</label>
+                <input type="text" name="reply_to_name" id="reply_to_name" value="{{ old('reply_to_name') }}" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="reply_to_email">Email</label>
+                <input type="email" name="reply_to_email" id="reply_to_email" value="{{ old('reply_to_email') }}" class="form-control">
+            </div>
+        </fieldset>
+
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
 
