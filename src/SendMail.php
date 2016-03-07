@@ -63,6 +63,11 @@ class SendMail
     protected $category;
 
     /**
+     * @var array
+     */
+    protected $options;
+
+    /**
      * @param To $to
      * @param From $from
      * @param string $subject
@@ -97,6 +102,7 @@ class SendMail
         $this->project = $project;
         $this->category = $category;
         $this->tags = $tags;
+        $this->options = $options;
     }
 
     /**
@@ -136,7 +142,6 @@ class SendMail
      *
      * @param string $view
      * @param null|string $namespace
-     * @todo: add possibility to change the namespace from outside the class
      */
     public function setView($view, $namespace = null)
     {
@@ -205,7 +210,7 @@ class SendMail
 
         // add missing information to the request
         // create a collection to work with
-        $data = self::injectExtraInfoInRequest($project, $request->request->all());
+        $data = self::injectDefaultInformationIntoRequest($project, $request->request->all());
 
         // validate the data
         self::validate($data);
@@ -232,6 +237,15 @@ class SendMail
             $options['view_namespace'] = $data['messageData']['view_namespace'];
         }
 
+        // set the reply to info
+        if (isset($data['reply-to']['email']) && !is_null($data['reply-to']['email'])) {
+            $options['reply-to']['email'] = $data['reply-to']['email'];
+        }
+
+        if (isset($data['reply-to']['name']) && !is_null($data['reply-to']['name'])) {
+            $options['reply-to']['name'] = $data['reply-to']['name'];
+        }
+
         return new static($to, $from, $subject, $view, $viewData, $project, $category, $tags, $options);
     }
 
@@ -242,7 +256,7 @@ class SendMail
      * @param array $data
      * @return Collection
      */
-    public static function injectExtraInfoInRequest(Project $project, $data)
+    public static function injectDefaultInformationIntoRequest(Project $project, $data)
     {
         // replace missing recipient information with the defaults
         if (!isset($data['to']['name'])) {
@@ -262,6 +276,19 @@ class SendMail
             $data['from']['email'] = $project->sender_email;
         }
 
+        // insert the reply-to if set on the project
+        if (!isset($data['reply-to']['email']) && !is_null($project->reply_to_email)) {
+            $data['reply-to']['email'] = $project->reply_to;
+
+            if (!isset($data['reply-to']['name'])) {
+                if(!is_null($project->reply_to_name)){
+                    $data['reply-to']['name'] = $project->reply_to_name;
+                }else{ // fallback to project name
+                    $data['reply-to']['name'] = $project->human_name;
+                }
+            }
+        }
+
         // return a new collection
         return collect($data);
     }
@@ -279,6 +306,11 @@ class SendMail
                     $message->from($this->from->getEmail(), $this->from->getName());
                     $message->to($this->to->getEmail(), $this->to->getName())
                         ->subject($this->subject);
+                    // set reply to
+                    if ($this->options['reply-to']) {
+                        $message->replyTo($this->options['reply-to']['email'], $this->options['reply-to']['name']);
+                    }
+
                     foreach ($this->tags as $tag) {
                         $message->tag($tag);
                     }
@@ -309,6 +341,7 @@ class SendMail
             'to.name' => "required",
             'to.email' => "required|email",
             'from.email' => "email",
+            'reply-to.email' => "email",
             'project' => "required",
             'subject' => "required",
             'messageData.view' => "required",
