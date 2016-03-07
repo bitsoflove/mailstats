@@ -103,6 +103,10 @@ Full payload example:
                         name: "<sender_name_>",
                         email: "<sender_email@domain.com>"
                     },
+                    replyto: {
+                        name: "<sender_name_>",
+                        email: "<sender_email@domain.com>"
+                    },
                     project: "<project>",
                     subject: "<subject>",
                     messageData: {
@@ -122,7 +126,7 @@ Full payload example:
 
 Minimum required payload example:
 
-If you've entered recipient and/or from information on your defined project. The package will replace them in the request. If the view_namespace is missing the default will be used "mail-stats", if you would like to use no namespace enter an empty string.
+If you've entered recipient, from or reply-to information on your defined project, the package will pick up on this and add them in the request. If the view_namespace is missing the default will be used "mail-stats", if you would like to use no namespace enter an empty string. If no reply-to information was entered the default from address is used.
 
 ```javascript
         function action() {
@@ -148,8 +152,7 @@ If you've entered recipient and/or from information on your defined project. The
 
 ### Todos
 
- - Add extended documention
- - Add usage example
+ - Add extended documentation
  - Add JWT security (v2)
 
 License
