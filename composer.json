@@ -3,7 +3,7 @@
   "description": "Simple endpoint for sending emails and receiving data back in association with Mailgun",
   "type": "library",
   "require": {
-    "laravel/framework": "^5.2",
+    "laravel/framework": "^5.1",
     "bogardo/mailgun": "^4.0"
   },
   "license": "MIT",
