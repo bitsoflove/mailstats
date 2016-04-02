@@ -1,13 +1,6 @@
-@extends('layouts.app')
+@extends('mail-stats::layouts.app')
 
-@section('contentheader_title')
-    Edit project: {{ $project->human_name }}
-@endsection
-@section('contentheader_description')
-    Update {{ $project->human_name }}
-@endsection
-
-@section('main-content')
+@section('content')
 
     @if (count($errors) > 0)
         <div class="alert alert-danger">

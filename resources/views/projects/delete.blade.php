@@ -1,12 +1,6 @@
-@extends('layouts.app')
+@extends('mail-stats::layouts.app')
 
-@section('contentheader_title')
-    Confirm deletion for {{ $project->human_name }}
-@endsection
-@section('contentheader_description')
-@endsection
-
-@section('main-content')
+@section('content')
 
     <form action="{{ route('projects.destroy', [$project->id]) }}" method="POST">
         {{ csrf_field() }}

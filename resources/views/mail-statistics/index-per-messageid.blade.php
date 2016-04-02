@@ -1,13 +1,6 @@
-@extends('layouts.app')
+@extends('mail-stats::layouts.app')
 
-@section('contentheader_title')
-    Mail statistics for {{ $messageId }}
-@endsection
-@section('contentheader_description')
-    Display a list of mail log information for {{ $messageId }}
-@endsection
-
-@section('main-content')
+@section('content')
 
     <table class="table">
         <thead>

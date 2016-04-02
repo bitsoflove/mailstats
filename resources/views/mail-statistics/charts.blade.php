@@ -1,13 +1,6 @@
-@extends('layouts.app')
+@extends('mail-stats::layouts.app')
 
-@section('contentheader_title')
-    Charts
-@endsection
-@section('contentheader_description')
-    Charts?
-@endsection
-
-@section('main-content')
+@section('content')
     <div id="last-interaction-per-mail-chart-wrapper" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
 @endsection
 

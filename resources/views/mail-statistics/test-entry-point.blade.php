@@ -1,13 +1,6 @@
-@extends('layouts.app')
+@extends('mail-stats::layouts.app')
 
-@section('contentheader_title')
-    Mail log
-@endsection
-@section('contentheader_description')
-    Display a list of mail log information
-@endsection
-
-@section('main-content')
+@section('content')
     <a class="btn btn-primary" href="javascript:action()">Click me to send an email.</a>
 @endsection
 
@@ -15,6 +8,13 @@
     @parent
     <script type="text/javascript">
         function action() {
+            {{-- add the csrf token to every ajax request --}}
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             jQuery.ajax({
                 url: "{{ url("mail-send") }}",
                 type: "POST",
@@ -39,7 +39,7 @@
                 success: function (result) {
                     console.log(result);
                 }
-            })
+            });
         }
 
 

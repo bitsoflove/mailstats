@@ -1,14 +1,6 @@
-@extends('layouts.app')
+@extends('mail-stats::layouts.app')
 
-@section('contentheader_title')
-    Mail statistics for {{ $project->human_name }}
-@endsection
-@section('contentheader_description')
-    Display a list of mail log information for {{ $project->human_name }}
-@endsection
-
-@section('main-content')
-
+@section('content')
     <a class="btn btn-default" href="{{ route('mail-stats-per-project-cart',[$project->name]) }}">Chart view</a>
 
     <table class="table">
@@ -35,7 +27,7 @@
         </tbody>
     </table>
 
-    {!! $mailStatistics->links() !!}
+    {!! $mailStatistics->render() !!}
 
     @include("mail-stats::partials.status-overview")
 

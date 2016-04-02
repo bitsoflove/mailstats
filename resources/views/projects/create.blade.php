@@ -1,13 +1,6 @@
-@extends('layouts.app')
+@extends('mail-stats::layouts.app')
 
-@section('contentheader_title')
-    Create a project
-@endsection
-@section('contentheader_description')
-    Create a new project to associate with the mailgun service
-@endsection
-
-@section('main-content')
+@section('content')
 
     @if (count($errors) > 0)
         <div class="alert alert-danger">

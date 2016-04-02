@@ -1,13 +1,6 @@
-@extends('layouts.app')
+@extends('mail-stats::layouts.app')
 
-@section('contentheader_title')
-    Projects
-@endsection
-@section('contentheader_description')
-    Display a list of projects
-@endsection
-
-@section('main-content')
+@section('content')
 
     @if (session('status'))
         <div class="alert alert-success">
@@ -43,6 +36,6 @@
         </tbody>
     </table>
 
-    {!! $projects->links() !!}
+    {!! $projects->render() !!}
 
 @endsection

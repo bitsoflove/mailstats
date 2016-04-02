@@ -1,13 +1,6 @@
-@extends('layouts.app')
+@extends('mail-stats::layouts.app')
 
-@section('contentheader_title')
-    Mail log
-@endsection
-@section('contentheader_description')
-    Display a list of mail log information
-@endsection
-
-@section('main-content')
+@section('content')
 
     @if($projects->count() > 1)
         <h3>Filter by project</h3>
@@ -48,7 +41,7 @@
         </tbody>
     </table>
 
-    {!! $mailStatistics->links() !!}
+    {!! $mailStatistics->render() !!}
 
     @include("mail-stats::partials.status-overview")
 
