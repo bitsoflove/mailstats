@@ -10,7 +10,7 @@ Route::bind('projectSlug', function ($projectSlug) {
     throw new \Illuminate\Database\Eloquent\ModelNotFoundException;
 });
 
-Route::group(['middleware' => ['web', 'auth']], function () {
+Route::group(['middleware' => []], function () {
     // for testing purposes only
     Route::get('mail-statistics/test-entry-point', "BitsOfLove\\MailStats\\Http\\Controllers\\MailStatisticsController@testEntryPoint");
 
@@ -37,7 +37,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     ]);
 });
 
-Route::group(['middleware' => ['api']], function () {
+Route::group(['middleware' => []], function () {
     // route to receive a response from mailgun
     Route::post('mail-statistics', "BitsOfLove\\MailStats\\Http\\Controllers\\MailsController@log");
     // route to send an email
