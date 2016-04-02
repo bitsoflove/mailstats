@@ -2,33 +2,20 @@
 
 namespace BitsOfLove\MailStats;
 
-use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use BitsOfLove\MailStats\Providers\EventProvider;
+use Bogardo\Mailgun\MailgunServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
 class MailStatsProvider extends ServiceProvider
 {
-    /**
-     * Events registered with the service provider
-     *
-     * @var array
-     */
-    protected $listen = [
-        'BitsOfLove\MailStats\Events\EmailAddedToQueue' => [
-            'BitsOfLove\MailStats\Listeners\EmailAddedToQueue\PersistMailStatistic',
-        ],
-    ];
 
     /**
      * Bootstrap the application services.
-     *
-     * @param DispatcherContract $events
      */
-    public function boot(DispatcherContract $events)
+    public function boot()
     {
-        parent::boot($events);
-
         $this->bootConfig();
         $this->bootViews();
         $this->bootMigrations();
@@ -41,8 +28,7 @@ class MailStatsProvider extends ServiceProvider
      */
     public function register()
     {
-        // load the required service provider
-        $this->app->register(\Bogardo\Mailgun\MailgunServiceProvider::class);
+        $this->registerProviders();
         $this->registerLogger();
         $this->registerRoutes();
     }
@@ -120,5 +106,12 @@ class MailStatsProvider extends ServiceProvider
         }
 
         $this->app['view']->addNamespace($namespace, $path);
+    }
+
+    private function registerProviders()
+    {
+        // load the required service provider
+        $this->app->register(MailgunServiceProvider::class);
+        $this->app->register(EventProvider::class);
     }
 }
