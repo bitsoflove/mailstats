@@ -41,6 +41,8 @@ class MailStatsProvider extends ServiceProvider
      */
     public function register()
     {
+        // load the required service provider
+        $this->app->register(\Bogardo\Mailgun\MailgunServiceProvider::class);
         $this->registerLogger();
         $this->registerRoutes();
     }
