@@ -4,9 +4,8 @@ Simple endpoint for sending emails and receiving data back in association with M
 
 ### Version
 
-This packages uses features from Laravel 5.2 so you will need 5.2 if you want to use this package
-
-currently: dev
+1.0 -> for Laravel 5.2 (kinda discontinued atm)
+2.0 -> for Laravel 5.1 lts
 
 ### Installation
 
@@ -20,10 +19,9 @@ Add the service providers to config/app.php
 
 ```
 BitsOfLove\MailStats\MailStatsProvider::class,
-Bogardo\Mailgun\MailgunServiceProvider::class,
 ```
 
-and register the Mailgun Facade
+If you want to use the Mailgun facade, register it
 
 ```
 'Mailgun' => Bogardo\Mailgun\Facades\Mailgun::class,
@@ -59,11 +57,10 @@ The domain and secret can be found on https://mailgun.com/app in your specific d
 
 If you want to use this package you'll have to setup mailgun webhooks for your domain, https://documentation.mailgun.com/api-webhooks.html. By default the webhook url is /mail-statistics (POST) route defined in package routes.php file.
 
-#### Default available routes
+#### Default available
 
-The package provides 2 basic Entities: Project and MailStatistic.
+By default you get Project, Category and MailStatistic Entities. These entities are the backbone of the package. The following CRUD is available.
 
-For Project there is a simple CRUD workflow accessible via:
 
 METHOD    | route                                     | name                       | description
 ----------|-------------------------------------------|----------------------------|-------
@@ -75,15 +72,22 @@ PUT/PATCH | projects/{projects}                       | projects.update | Update
 GET  | projects/{projects}/delete                | projects.delete | Delete an existing project (confirmation needed)
 DELETE    | projects/{projects}                       | projects.destroy | Actually delete the given project
 
-For MailStatistic you get:
+By default you're provided with 2 simple api endpoints
 
 METHOD    | route                                     | name                       | description
 ----------|-------------------------------------------|----------------------------|-------
 POST      | mail-send                                 || Endpoint to post a request to to send an email via JavaScript
 POST      | mail-statistics                           | | Endpoint to post Mailgun webhooks to, these are saved in the database
+
+And last but not least you're provided with a couple of overviews 
+
+METHOD    | route                                     | name                       | description
+----------|-------------------------------------------|----------------------------|-------
 GET  | mail-statistics                           |    | List all MailStatistic entities (paginated)
 GET  | mail-statistics/{projectSlug}             | mail-stats-per-project| Show all MailStatic information for the requested project
 GET  | mail-statistics/{projectSlug}/{messageId} | mail-stats-per-message-id | Show the bundled information for the given message-id
+
+All pages provided use a bootstrap layout.
 
 #### Daily usage
 
