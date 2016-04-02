@@ -7,6 +7,7 @@ use BitsOfLove\MailStats\Entities\Project;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class MailStatisticsController extends Controller
 {
@@ -39,7 +40,7 @@ class MailStatisticsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -71,7 +72,7 @@ class MailStatisticsController extends Controller
      * Show a list of entries per project
      *
      * @param Project $project
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function indexPerProject(Project $project)
     {
@@ -89,7 +90,7 @@ class MailStatisticsController extends Controller
      *
      * @param Project $project
      * @param string $messageId
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function indexPerMessageId(Project $project, $messageId)
     {
@@ -107,9 +108,15 @@ class MailStatisticsController extends Controller
         ));
     }
 
+    /**
+     * Create a simple chart view
+     *
+     * @param Project $project
+     * @return Response
+     */
     public function charts(Project $project)
     {
-        $mailStatistics = $this->mailStatistics->newestGrouped()->pluck('status', 'id');
+        $mailStatistics = $this->mailStatistics->newestGrouped()->lists('status', 'id');
 
         $lastStatuses = [];
         $total = 0;

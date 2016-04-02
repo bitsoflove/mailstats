@@ -5,7 +5,7 @@ namespace BitsOfLove\MailStats\Http\Controllers;
 use BitsOfLove\MailStats\Exceptions\ProjectNotSupported;
 use BitsOfLove\MailStats\LogResponse;
 use BitsOfLove\MailStats\SendMail;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Contracts\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -49,7 +49,7 @@ class MailsController extends Controller
         } catch (ValidationException $e) {
             return new JsonResponse([
                 'success' => false,
-                'errors' => $e->validator->errors(),
+                'errors' => $e->errors(),
             ], 400);
         } catch (\Exception $e) {
             return new JsonResponse([
@@ -74,7 +74,7 @@ class MailsController extends Controller
     public function log(Request $request)
     {
         // lets log the full response just to be sure
-        // but only not in production
+        // but only if we aren't in production environment
         if (!app()->environment('production')) {
             $this->logger->addInfo(json_encode($request->request->all()));
         }
