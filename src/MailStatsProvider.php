@@ -3,6 +3,7 @@
 namespace BitsOfLove\MailStats;
 
 use BitsOfLove\MailStats\Providers\EventProvider;
+use BitsOfLove\MailStats\Providers\RouteProvider;
 use Bogardo\Mailgun\MailgunServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Monolog\Handler\StreamHandler;
@@ -30,7 +31,6 @@ class MailStatsProvider extends ServiceProvider
     {
         $this->registerProviders();
         $this->registerLogger();
-        $this->registerRoutes();
     }
 
     /**
@@ -66,15 +66,14 @@ class MailStatsProvider extends ServiceProvider
     }
 
     /**
-     * Register the routes for the package
+     * Register extra service providers needed for the package
      */
-    private function registerRoutes()
+    private function registerProviders()
     {
-        include __DIR__ . '/Http/routes.php';
-
-        $this->app->make('BitsOfLove\MailStats\Http\Controllers\MailsController');
-        $this->app->make('BitsOfLove\MailStats\Http\Controllers\MailStatisticsController');
-        $this->app->make('BitsOfLove\MailStats\Http\Controllers\ProjectsController');
+        // load the required service provider
+        $this->app->register(MailgunServiceProvider::class);
+        $this->app->register(RouteProvider::class);
+        $this->app->register(EventProvider::class);
     }
 
     /**
@@ -108,10 +107,5 @@ class MailStatsProvider extends ServiceProvider
         $this->app['view']->addNamespace($namespace, $path);
     }
 
-    private function registerProviders()
-    {
-        // load the required service provider
-        $this->app->register(MailgunServiceProvider::class);
-        $this->app->register(EventProvider::class);
-    }
+
 }

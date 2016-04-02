@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Route model binding
+ */
 Route::bind('projectSlug', function ($projectSlug) {
     $project = \BitsOfLove\MailStats\Entities\Project::where('name', $projectSlug)->first();
 
@@ -12,34 +15,34 @@ Route::bind('projectSlug', function ($projectSlug) {
 
 Route::group(['middleware' => []], function () {
     // for testing purposes only
-    Route::get('mail-statistics/test-entry-point', "BitsOfLove\\MailStats\\Http\\Controllers\\MailStatisticsController@testEntryPoint");
+    Route::get('mail-statistics/test-entry-point', "MailStatisticsController@testEntryPoint");
 
-    Route::get("mail-statistics", "BitsOfLove\\MailStats\\Http\\Controllers\\MailStatisticsController@index");
+    Route::get("mail-statistics", "MailStatisticsController@index");
     Route::get("mail-statistics/{projectSlug}", [
         'as' => "mail-stats-per-project",
-        'uses' => "BitsOfLove\\MailStats\\Http\\Controllers\\MailStatisticsController@indexPerProject"
+        'uses' => "MailStatisticsController@indexPerProject"
     ]);
     Route::get("mail-statistics/{projectSlug}/charts", [
         'as' => "mail-stats-per-project-cart",
-        'uses' => "BitsOfLove\\MailStats\\Http\\Controllers\\MailStatisticsController@charts"
+        'uses' => "MailStatisticsController@charts"
     ]);
     Route::get("mail-statistics/{projectSlug}/{messageId}", [
         'as' => "mail-stats-per-message-id",
-        'uses' => "BitsOfLove\\MailStats\\Http\\Controllers\\MailStatisticsController@indexPerMessageId"
+        'uses' => "MailStatisticsController@indexPerMessageId"
     ]);
 
     Route::get('projects/{projects}/delete', [
         'as' => "projects.delete",
-        'uses' => "BitsOfLove\\MailStats\\Http\\Controllers\\ProjectsController@delete"
+        'uses' => "ProjectsController@delete"
     ]);
-    Route::resource('projects', "BitsOfLove\\MailStats\\Http\\Controllers\\ProjectsController", [
+    Route::resource('projects', "ProjectsController", [
         'except' => ['show']
     ]);
 });
 
 Route::group(['middleware' => []], function () {
     // route to receive a response from mailgun
-    Route::post('mail-statistics', "BitsOfLove\\MailStats\\Http\\Controllers\\MailsController@log");
+    Route::post('mail-statistics', "MailsController@log");
     // route to send an email
-    Route::post('mail-send', "BitsOfLove\\MailStats\\Http\\Controllers\\MailsController@mail");
+    Route::post('mail-send', "MailsController@mail");
 });
