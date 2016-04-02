@@ -65,7 +65,7 @@ class MailStatsProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'mail-stats');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/bitsoflove/mail-stats'),
+            __DIR__.'/../resources/views' => base_path('resources/views/vendor/bitsoflove/mail-stats'),
         ]);
     }
 
